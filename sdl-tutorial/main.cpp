@@ -10,6 +10,16 @@
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
 
+//Starts up SDL and creates window
+bool init();
+
+//Loads media
+bool loadMedia();
+
+//Frees media and shuts down SDL
+void close();
+
+
 //The window we'll be rendering to
 SDL_Window* globalWindow = NULL;
     
@@ -17,7 +27,7 @@ SDL_Window* globalWindow = NULL;
 SDL_Surface* globalScreenSurface = NULL;
 
 //The image we will load and show on the screen
-SDL_Surface* globalHelloWorld = NULL;
+SDL_Surface* globalBackgroundImage = NULL;
 
 
 
@@ -60,8 +70,8 @@ bool loadMedia()
     bool success = true;
 
     //Load splash image
-    globalHelloWorld = SDL_LoadBMP( "assets/background.bmp" );
-    if( globalHelloWorld == NULL )
+    globalBackgroundImage = SDL_LoadBMP( "assets/background.bmp" );
+    if( globalBackgroundImage == NULL )
     {
         printf( "Unable to load image %s! SDL Error: %s\n", "sdl-tutorial/assets/background.bmp", SDL_GetError() );
         success = false;
@@ -73,8 +83,8 @@ bool loadMedia()
 //Frees media and shuts down SDL
 void close(){
     //Deallocate surface
-    SDL_FreeSurface( globalHelloWorld );
-    globalHelloWorld = NULL;
+    SDL_FreeSurface( globalBackgroundImage );
+    globalBackgroundImage = NULL;
 
     //Destroy window
     SDL_DestroyWindow( globalWindow );
@@ -100,23 +110,56 @@ int main(int argc, const char * argv[]) {
         printf( "Failed to load media!\n" );
         return 0;
     }
-    
-    //Apply the image
-    SDL_BlitSurface( globalHelloWorld, NULL, globalScreenSurface, NULL );
-    
-    //Update the surface
-    SDL_UpdateWindowSurface( globalWindow );
-    
-    //Hack to get window to stay up
-    SDL_Event e;
-    bool quit = false;
-    while( quit == false ){
         
-        while( SDL_PollEvent( &e ) ){
-            if( e.type == SDL_QUIT ){
-                quit = true;
+    //Main loop flag
+    bool quit = false;
+    //Event handler
+    SDL_Event e;
+        
+    // int loopCounter = 0;
+    
+    //Hack to get window to stay up && While application is running (The game loop)
+    while( !quit ){
+        // printf("update loop %i \n",loopCounter);
+        // loopCounter++;
+
+        //Handle events on queue
+        while( SDL_PollEvent( &e ) != 0 ){
+            
+            //User requests quit
+            switch (e.type) {
+                
+                case SDL_QUIT:
+                    quit = true;
+                    break;
+                
+                case SDL_KEYUP:
+                    printf("Keyboard type released \n");
+                    printf("%u released the press \n",e.key.keysym.scancode);
+                    break;
+                    
+                case SDL_KEYDOWN:
+                    printf("Event keyboard typed triggered \n");
+                    printf("%u pressed down \n",e.key.keysym.scancode);
+                    
+                    break;
+                    
+                default:
+                    // printf("Some event happen %u \n",e.type);
+                    break;
             }
+            
         }
+        
+        
+        
+        //Apply the image
+        SDL_BlitSurface( globalBackgroundImage, NULL, globalScreenSurface, NULL );
+        
+        //Update the surface
+        SDL_UpdateWindowSurface( globalWindow );
+
+        
     }
     
     //Free resources and close SDL
