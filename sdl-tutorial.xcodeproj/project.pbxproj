@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		12A096D82941E071004A300E /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 12A096D72941E071004A300E /* main.cpp */; };
+		12A096E02941E0A5004A300E /* SDL2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12A096DF2941E0A5004A300E /* SDL2.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +26,7 @@
 /* Begin PBXFileReference section */
 		12A096D42941E071004A300E /* sdl-tutorial */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "sdl-tutorial"; sourceTree = BUILT_PRODUCTS_DIR; };
 		12A096D72941E071004A300E /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		12A096DF2941E0A5004A300E /* SDL2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2.framework; path = ../../../../../Library/Frameworks/SDL2.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -32,6 +34,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				12A096E02941E0A5004A300E /* SDL2.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -43,6 +46,7 @@
 			children = (
 				12A096D62941E071004A300E /* sdl-tutorial */,
 				12A096D52941E071004A300E /* Products */,
+				12A096DE2941E0A5004A300E /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -60,6 +64,14 @@
 				12A096D72941E071004A300E /* main.cpp */,
 			);
 			path = "sdl-tutorial";
+			sourceTree = "<group>";
+		};
+		12A096DE2941E0A5004A300E /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				12A096DF2941E0A5004A300E /* SDL2.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -239,6 +251,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(LOCAL_LIBRARY_DIR)/Frameworks",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -247,6 +263,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(LOCAL_LIBRARY_DIR)/Frameworks",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
