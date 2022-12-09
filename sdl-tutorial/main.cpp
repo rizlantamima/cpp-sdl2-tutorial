@@ -8,8 +8,8 @@
 #include <stdio.h>
 #include <string>
 
-const int SCREEN_WIDTH = 640;
-const int SCREEN_HEIGHT = 480;
+const int SCREEN_WIDTH = 800;
+const int SCREEN_HEIGHT = 600;
 
 enum KeyPressSurfaces
 {
@@ -36,9 +36,6 @@ SDL_Window* globalWindow = NULL;
     
 //The surface contained by the window
 SDL_Surface* globalScreenSurface = NULL;
-
-//The image we will load and show on the screen
-//SDL_Surface* globalBackgroundImage = NULL;
 
 
 //Loads individual image
@@ -84,14 +81,26 @@ bool init(){
 
 SDL_Surface* loadSurface( std::string path )
 {
+    //The final optimized image
+    SDL_Surface* optimizedSurface = NULL;
     //Load image at specified path
-    SDL_Surface* loadedSurface = SDL_LoadBMP( path.c_str() );
-    if( loadedSurface == NULL )
+    SDL_Surface* originalSurface = SDL_LoadBMP( path.c_str() );
+    if( originalSurface == NULL )
     {
         printf( "Unable to load image %s! SDL Error: %s\n", path.c_str(), SDL_GetError() );
+        return optimizedSurface;
     }
+    
+    optimizedSurface = SDL_ConvertSurface( originalSurface, globalScreenSurface->format, 0 );
+    if( optimizedSurface == NULL )
+    {
+        printf( "Unable to optimize image %s! SDL Error: %s\n", path.c_str(), SDL_GetError() );
+    }
+    
+    //Get rid of old original loaded surface to free the memory from the old image / surface
+    SDL_FreeSurface( originalSurface );
 
-    return loadedSurface;
+    return optimizedSurface;
 }
 
 //Loads media
@@ -244,8 +253,23 @@ int main(int argc, const char * argv[]) {
         
         
         
-        //Apply the image
-        SDL_BlitSurface( globalCurrentSurface, NULL, globalScreenSurface, NULL );
+        // Apply the image
+        // SDL_BlitSurface( globalCurrentSurface, NULL, globalScreenSurface, NULL );
+        
+        /*
+        ----------------------------------------------------
+        Apply the image stretched
+        ----------------------------------------------------
+        
+         The average image size is 640x480 meanwhile the creen are 800x600 so we need to stretch the image size to be same as the screen
+        */
+        
+        SDL_Rect stretchRect;
+        stretchRect.x = 0;
+        stretchRect.y = 0;
+        stretchRect.w = SCREEN_WIDTH;
+        stretchRect.h = SCREEN_HEIGHT;
+        SDL_BlitScaled( globalCurrentSurface, NULL, globalScreenSurface, &stretchRect );
         
         //Update the surface
         SDL_UpdateWindowSurface( globalWindow );
